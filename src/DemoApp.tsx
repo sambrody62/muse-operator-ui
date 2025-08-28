@@ -5,7 +5,7 @@ import DemoClickUpPage from './DemoClickUpPage';
 import DemoMuseOperatorUI from './DemoMuseOperatorUI';
 import DemoExplainerBubble from './DemoExplainerBubble';
 import { demoScript } from './DemoScriptV2';
-import { useTextToSpeech } from './hooks/useTextToSpeech';
+import { useLocalAudio } from './hooks/useLocalAudio';
 
 function DemoApp() {
   const [isMuseVisible, setIsMuseVisible] = useState(false);
@@ -14,10 +14,8 @@ function DemoApp() {
   const [showExplainer, setShowExplainer] = useState(true);
   const [speechComplete, setSpeechComplete] = useState(false);
   
-  // Initialize text-to-speech with callback when speech ends
-  const elevenLabsApiKey = process.env.REACT_APP_ELEVENLABS_API_KEY || '';
-  const { speak: speakText, stop: stopTTS, isPlaying: isTTSPlaying } = useTextToSpeech(
-    elevenLabsApiKey,
+  // Initialize local audio playback with callback when speech ends
+  const { speak: speakAudio, stop: stopAudio } = useLocalAudio(
     () => setSpeechComplete(true) // Called when narration finishes
   );
 
@@ -56,20 +54,13 @@ function DemoApp() {
       // Reset speech complete flag
       setSpeechComplete(false);
       
-      // Stop any ongoing speech
-      stopTTS();
+      // Stop any ongoing audio
+      stopAudio();
       
       // Start narration immediately
       const timer = setTimeout(() => {
-        // Clean the description text for speech
-        const textToSpeak = currentScene.explainer!.description
-          .replace(/[🔍🧠✍️🛡️🤝]/g, '') // Remove emojis
-          .replace(/\s+/g, ' ') // Normalize whitespace
-          .trim();
-        
-        console.log('API Key present:', !!elevenLabsApiKey);
-        console.log('Speaking explainer text (background volume):', textToSpeak);
-        speakText(textToSpeak);
+        console.log('Playing local audio for scene:', currentScene.id);
+        speakAudio(currentScene.id);
       }, 100); // Minimal delay for UI to render
       
       return () => {
