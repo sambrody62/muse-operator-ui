@@ -25,9 +25,9 @@ export const useTextToSpeech = (apiKey: string, onSpeechEnd?: () => void) => {
       window.speechSynthesis.cancel();
       
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
-      utterance.pitch = 1.0;
-      utterance.volume = 1.0;
+      utterance.rate = 1.15;  // Faster for more energy and excitement
+      utterance.pitch = 1.25;  // Higher pitch for enthusiastic delivery
+      utterance.volume = 1.0;  // Full volume for impact
       
       utterance.onstart = () => setIsPlaying(true);
       utterance.onend = () => {
@@ -85,9 +85,9 @@ export const useTextToSpeech = (apiKey: string, onSpeechEnd?: () => void) => {
           text: text,
           model_id: options?.model || 'eleven_monolingual_v1',
           voice_settings: options?.voiceSettings || {
-            stability: 0.35,  // Lower for more variation/energy
-            similarity_boost: 0.75,  // Higher for consistent voice
-            style: 0.65,  // Higher for more expressive/upbeat delivery
+            stability: 0.25,  // Much lower for maximum variation and energy
+            similarity_boost: 0.85,  // Keep voice consistent 
+            style: 0.95,  // Near maximum for very expressive and excited delivery
             use_speaker_boost: true
           }
         },
