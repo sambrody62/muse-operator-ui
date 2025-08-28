@@ -199,7 +199,7 @@ const MuseOperatorUI = () => {
   };
 
   return (
-    <div className={`${isExpanded ? 'w-[50vw]' : 'w-80'} h-screen bg-white text-slate-900 flex flex-col font-inter shadow-2xl relative transition-all duration-300`}>
+    <div className={`${isExpanded ? 'w-[25vw]' : 'w-80'} h-screen bg-white text-slate-900 flex flex-col font-inter shadow-2xl relative transition-all duration-300`}>
       {/* Expand/Collapse Arrow */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
