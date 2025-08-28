@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/muse-operator-ui/static/css/main.982f90fc.css",
+    "main.js": "/muse-operator-ui/static/js/main.07261283.js",
+    "static/js/453.7a05fd75.chunk.js": "/muse-operator-ui/static/js/453.7a05fd75.chunk.js",
+    "index.html": "/muse-operator-ui/index.html",
+    "main.982f90fc.css.map": "/muse-operator-ui/static/css/main.982f90fc.css.map",
+    "main.07261283.js.map": "/muse-operator-ui/static/js/main.07261283.js.map",
+    "453.7a05fd75.chunk.js.map": "/muse-operator-ui/static/js/453.7a05fd75.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.982f90fc.css",
+    "static/js/main.07261283.js"
+  ]
+}
