@@ -24,8 +24,8 @@ function DemoApp() {
   const handleExtensionClick = () => {
     setIsMuseVisible(!isMuseVisible);
     if (!isMuseVisible) {
-      // Start showing explainer when panel opens
-      setTimeout(() => setShowExplainer(true), 500);
+      // Start showing explainer immediately when panel opens
+      setShowExplainer(true);
     } else {
       setShowExplainer(false);
     }
@@ -59,7 +59,7 @@ function DemoApp() {
       // Stop any ongoing speech
       stopTTS();
       
-      // Small delay to let UI settle
+      // Start narration immediately
       const timer = setTimeout(() => {
         // Clean the description text for speech
         const textToSpeak = currentScene.explainer!.description
@@ -68,9 +68,9 @@ function DemoApp() {
           .trim();
         
         console.log('API Key present:', !!elevenLabsApiKey);
-        console.log('Speaking explainer text:', textToSpeak);
+        console.log('Speaking explainer text (background volume):', textToSpeak);
         speakText(textToSpeak);
-      }, 1000); // 1 second delay after scene change
+      }, 100); // Minimal delay for UI to render
       
       return () => {
         clearTimeout(timer);

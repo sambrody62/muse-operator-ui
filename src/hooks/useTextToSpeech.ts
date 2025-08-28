@@ -27,7 +27,7 @@ export const useTextToSpeech = (apiKey: string, onSpeechEnd?: () => void) => {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 1.15;  // Faster for more energy and excitement
       utterance.pitch = 1.25;  // Higher pitch for enthusiastic delivery
-      utterance.volume = 1.0;  // Full volume for impact
+      utterance.volume = 0.3;  // Low volume for background narration
       
       utterance.onstart = () => setIsPlaying(true);
       utterance.onend = () => {
@@ -111,7 +111,7 @@ export const useTextToSpeech = (apiKey: string, onSpeechEnd?: () => void) => {
       const audio = new Audio(audioUrl);
       
       audioRef.current = audio;
-      audio.volume = 0.8; // Set reasonable volume
+      audio.volume = 0.3; // Low volume for background narration
 
       audio.onloadeddata = () => {
         setIsLoading(false);
