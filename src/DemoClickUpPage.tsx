@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, MoreHorizontal, Star, Plus, Calendar, Clock, Tag, Link, Paperclip, Smile, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MoreHorizontal, Star, Plus, Calendar, Clock, Tag, Link, Paperclip, Smile, CheckCircle2, FileText } from 'lucide-react';
 
 interface DemoClickUpPageProps {
   updates?: any[];
@@ -12,6 +12,7 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
   const [progress, setProgress] = useState(0);
   const [subtasks, setSubtasks] = useState<string[]>([]);
   const [highlightedFields, setHighlightedFields] = useState<Set<string>>(new Set());
+  const [documents, setDocuments] = useState<Array<{id: string, name: string, icon: string, addedAt: number}>>([]);
   const description = 'Develop comprehensive social media strategy for eco-friendly water bottle launch targeting millennials and Gen Z. Deliverables include platform strategy, content calendar, influencer partnerships, community building approach, and budget allocation across 6-week campaign timeline.';
 
   // Process updates from demo
@@ -47,6 +48,15 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
           case 'subtask-2':
           case 'subtask-3':
             setSubtasks(prev => [...prev, update.value]);
+            break;
+          case 'document':
+            // Add a new document
+            setDocuments(prev => [...prev, {
+              id: `doc-${Date.now()}`,
+              name: update.value,
+              icon: '📄',
+              addedAt: Date.now()
+            }]);
             break;
         }
       });
@@ -255,6 +265,37 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
               <Plus className="w-4 h-4 mr-1" />
               Create checklist
             </button>
+          </div>
+
+          {/* Documents */}
+          <div className="mb-6">
+            <h3 className="text-sm font-medium text-gray-700 mb-3 flex items-center">
+              <FileText className="w-4 h-4 mr-1" />
+              Documents
+            </h3>
+            {documents.length > 0 ? (
+              <div className="space-y-2">
+                {documents.map((doc, index) => (
+                  <div 
+                    key={doc.id} 
+                    className={`flex items-center p-3 bg-white border border-gray-200 rounded-lg hover:shadow-sm transition-all duration-300 ${
+                      Date.now() - doc.addedAt < 2000 ? 'highlight-pulse border-purple-400' : ''
+                    }`}
+                  >
+                    <span className="text-xl mr-3">{doc.icon}</span>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-gray-700">{doc.name}</p>
+                      <p className="text-xs text-gray-500">Added by Muse AI</p>
+                    </div>
+                    <CheckCircle2 className="w-5 h-5 text-green-500" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                <p className="text-sm text-gray-500">No documents yet</p>
+              </div>
+            )}
           </div>
 
           {/* Attachments */}

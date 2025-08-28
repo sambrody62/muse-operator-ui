@@ -64,7 +64,8 @@ export const demoScript: DemoScene[] = [
         delay: 2000,
         updates: [
           { field: 'subtask-1', value: '✓ Market Research', animate: true },
-          { field: 'progress', value: 20, animate: true }
+          { field: 'progress', value: 20, animate: true },
+          { field: 'document', value: '📊 Market Research Report', animate: true }
         ]
       }
     ]
@@ -101,7 +102,8 @@ export const demoScript: DemoScene[] = [
         delay: 2000,
         updates: [
           { field: 'subtask-2', value: '✓ Campaign Strategy', animate: true },
-          { field: 'progress', value: 40, animate: true }
+          { field: 'progress', value: 40, animate: true },
+          { field: 'document', value: '📋 Campaign Strategy Document', animate: true }
         ]
       }
     ]
@@ -150,7 +152,8 @@ export const demoScript: DemoScene[] = [
         delay: 2000,
         updates: [
           { field: 'subtask-3', value: '✓ Influencer Outreach', animate: true },
-          { field: 'progress', value: 60, animate: true }
+          { field: 'progress', value: 60, animate: true },
+          { field: 'document', value: '✉️ Influencer Outreach Templates', animate: true }
         ]
       }
     ]
