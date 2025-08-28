@@ -102,7 +102,7 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
                 } else if (update.value.includes('Campaign Strategy')) {
                   addedBy = 'Muse';
                 } else if (update.value.includes('Influencer Outreach')) {
-                  addedBy = 'Scout';
+                  addedBy = 'Echo';
                 } else if (update.value.includes('Content')) {
                   addedBy = 'Echo';
                 } else if (update.value.includes('Compliance')) {
