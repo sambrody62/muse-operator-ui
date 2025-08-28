@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, ArrowLeft } from 'lucide-react';
+import { Sparkles, ArrowRight } from 'lucide-react';
 
 interface ChromeExtensionButtonProps {
   onClick: () => void;
@@ -15,7 +15,7 @@ const ChromeExtensionButton: React.FC<ChromeExtensionButtonProps> = ({ onClick, 
           <span className="text-purple-600 font-semibold text-lg whitespace-nowrap mr-2">
             Click the extension to start
           </span>
-          <ArrowLeft className="w-5 h-5 text-purple-600" />
+          <ArrowRight className="w-5 h-5 text-purple-600" />
         </div>
       )}
       

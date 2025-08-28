@@ -6,9 +6,11 @@ interface DemoMuseOperatorUIProps {
   onClickUpUpdate?: (updates: any[]) => void;
   onSceneChange?: (sceneIndex: number) => void;
   isVisible: boolean;
+  speechComplete?: boolean;
+  onSpeechHandled?: () => void;
 }
 
-const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate, onSceneChange, isVisible }) => {
+const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate, onSceneChange, isVisible, speechComplete, onSpeechHandled }) => {
   const [showTaskDetails, setShowTaskDetails] = useState(false);
   const [showCollaboration, setShowCollaboration] = useState(true);
   const [messages, setMessages] = useState<any[]>([]);
@@ -51,6 +53,32 @@ const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate
     }
   }, [currentSceneIndex, onSceneChange]);
 
+  // Advance to next scene when speech is complete
+  useEffect(() => {
+    if (speechComplete && isPlaying) {
+      const currentScene = demoScript[currentSceneIndex];
+      // Check if we've shown all messages in the current scene
+      if (!currentScene || currentMessageIndex >= currentScene.messages.length) {
+        // All messages in scene are done, and speech is complete
+        if (currentSceneIndex < demoScript.length - 1) {
+          // Add a small delay for smooth transition
+          const timer = setTimeout(() => {
+            setCurrentSceneIndex(prev => prev + 1);
+            setCurrentMessageIndex(0);
+            setTalkingAgent(null);
+            if (onSpeechHandled) {
+              onSpeechHandled(); // Reset the flag
+            }
+          }, 2000); // 2 second delay after speech ends
+          return () => clearTimeout(timer);
+        } else {
+          // Last scene done
+          setIsPlaying(false);
+        }
+      }
+    }
+  }, [speechComplete, isPlaying, currentSceneIndex, currentMessageIndex, onSpeechHandled]);
+
   // Process demo messages
   useEffect(() => {
     if (!isPlaying) return;
@@ -68,7 +96,8 @@ const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate
         'muse-strategy': 'Muse',
         'echo-scout-collab': 'Echo', // Echo leads the collaboration
         'echo-content': 'Echo',
-        'atlas-compliance': 'Atlas'
+        'atlas-compliance': 'Atlas',
+        'system-complete': 'Muse' // Muse represents the whole system
       };
       return agentMap[sceneId] || null;
     };
@@ -90,15 +119,19 @@ const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate
       }
     }
     if (!currentMessage) {
-      // Move to next scene - wait longer between scenes
+      // Scene messages complete - wait for speech to finish
+      // Add a fallback timer in case speech doesn't complete
       if (currentSceneIndex < demoScript.length - 1) {
-        const sceneTransitionTimer = setTimeout(() => {
+        const fallbackTimer = setTimeout(() => {
+          // Fallback: advance after max wait time if speech hasn't triggered
+          console.log('Using fallback timer to advance scene');
           setCurrentSceneIndex(prev => prev + 1);
           setCurrentMessageIndex(0);
-          setTalkingAgent(null); // Clear talking agent between scenes
-        }, 5000); // Wait 5 seconds between scenes
-        return () => clearTimeout(sceneTransitionTimer);
+          setTalkingAgent(null);
+        }, 15000); // 15 second fallback
+        return () => clearTimeout(fallbackTimer);
       } else {
+        // Last scene completed
         setIsPlaying(false);
         setTalkingAgent(null);
       }

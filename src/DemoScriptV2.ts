@@ -33,8 +33,8 @@ export const demoScript: DemoScene[] = [
     id: 'scout-research',
     name: 'Scout Research',
     explainer: {
-      title: '🔍 Scout: Market Research',
-      description: 'Scout analyzes competitors and market trends in seconds, saving you 4-6 hours of manual research.'
+      title: 'Scout: Market Research',
+      description: 'Meet Sarah, a marketing manager drowning in deadlines. She needs competitive research that usually takes her entire morning. Watch as Scout instantly analyzes thousands of social posts, finding exactly what competitors are doing right now.'
     },
     messages: [
       {
@@ -73,8 +73,8 @@ export const demoScript: DemoScene[] = [
     id: 'muse-strategy',
     name: 'Muse Strategy',
     explainer: {
-      title: '🧠 Muse: Campaign Strategy',
-      description: 'Muse creates comprehensive strategies instantly, replacing 1-2 days of strategic planning.'
+      title: 'Muse: Campaign Strategy',
+      description: 'Sarah just saved six hours on research, but now she faces another challenge. She needs a complete campaign strategy by lunch. Her boss expects a detailed roadmap that would normally take two full days to develop. Enter Muse, the strategic mastermind.'
     },
     messages: [
       {
@@ -110,8 +110,8 @@ export const demoScript: DemoScene[] = [
     id: 'echo-scout-collab',
     name: 'Agent Collaboration',
     explainer: {
-      title: '🤝 Agents Working Together',
-      description: 'Watch how agents collaborate seamlessly. Echo needs research from Scout to write targeted content.'
+      title: 'Agents Working Together',
+      description: 'Something amazing happens next. Sarah needs personalized influencer outreach, but Echo realizes she needs specific research first. Watch as Echo asks Scout for help, and they collaborate in real time. This is where AI teamwork becomes magical.'
     },
     messages: [
       {
@@ -159,8 +159,8 @@ export const demoScript: DemoScene[] = [
     id: 'echo-content',
     name: 'Echo Content',
     explainer: {
-      title: '✍️ Echo: Content Creation',
-      description: 'Echo writes perfect brand copy instantly, eliminating hours of writing and revisions.'
+      title: 'Echo: Content Creation',
+      description: 'The clock is ticking. Sarah has strategy and influencer outreach ready, but she still needs launch content. Writing the perfect brand message usually means three hours of drafts, revisions, and second guessing. Echo is about to change everything.'
     },
     messages: [
       {
@@ -196,8 +196,8 @@ export const demoScript: DemoScene[] = [
     id: 'atlas-compliance',
     name: 'Atlas Compliance',
     explainer: {
-      title: '🛡️ Atlas: Compliance Review',
-      description: 'Atlas validates legal compliance instantly, replacing 1-2 weeks of legal review cycles.'
+      title: 'Atlas: Compliance Review',
+      description: 'Sarah has everything ready, but there is one final hurdle. Legal compliance. Usually this means sending everything to legal and waiting two weeks for approval. One wrong claim could mean starting over. Atlas, the guardian of compliance, steps in for the final check.'
     },
     messages: [
       {
@@ -224,8 +224,45 @@ export const demoScript: DemoScene[] = [
         delay: 2000,
         updates: [
           { field: 'subtask-5', value: '✓ Compliance Check', animate: true },
+          { field: 'progress', value: 85, animate: true }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'system-complete',
+    name: 'System Integration',
+    explainer: {
+      title: 'The Complete Picture',
+      description: 'Look at what just happened. Sarah completed a three day project in fifteen minutes. Every task in ClickUp has been updated automatically. The entire Nucleus system now has her campaign ready to deploy. This is not about replacing Sarah. This is about making her unstoppable.'
+    },
+    messages: [
+      {
+        id: 18,
+        agent: 'Operator',
+        content: "Wait, I just noticed ClickUp shows everything as complete. Did you update all my project management automatically?",
+        delay: 800
+      },
+      {
+        id: 19,
+        agent: 'Muse',
+        content: "✅ Everything is synchronized: ClickUp tasks updated, Nucleus campaign deployed, analytics configured, team notifications sent. Your entire workflow is ready.",
+        delay: 2000
+      },
+      {
+        id: 20,
+        agent: 'Operator',
+        content: "This is incredible! I went from overwhelmed to ahead of schedule. I can actually leave early today and still deliver more than ever before. This changes everything!",
+        delay: 1800
+      }
+    ],
+    clickUpUpdates: [
+      {
+        delay: 2000,
+        updates: [
+          { field: 'status', value: 'COMPLETED', animate: true },
           { field: 'progress', value: 100, animate: true },
-          { field: 'status', value: 'READY TO LAUNCH', animate: true }
+          { field: 'subtask-6', value: '✓ Campaign Live', animate: true }
         ]
       }
     ]
