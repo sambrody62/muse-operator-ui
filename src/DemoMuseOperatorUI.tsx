@@ -29,11 +29,10 @@ const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate
   };
 
   const agents = [
-    { id: 1, name: 'Muse', role: 'Strategy', emoji: '🧠' },
-    { id: 2, name: 'Scout', role: 'Research', emoji: '🔍' },
+    { id: 1, name: 'Scout', role: 'Research', emoji: '🔍' },
+    { id: 2, name: 'Muse', role: 'Strategy', emoji: '🧠' },
     { id: 3, name: 'Echo', role: 'Copy', emoji: '✍️' },
-    { id: 4, name: 'Atlas', role: 'QA', emoji: '🛡️' },
-    { id: 5, name: 'Beacon', role: 'Translation', emoji: '🌍' }
+    { id: 4, name: 'Atlas', role: 'QA', emoji: '🛡️' }
   ];
 
   // Auto-play demo when panel becomes visible
@@ -62,22 +61,39 @@ const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate
       return;
     }
 
+    // Set the main agent for this scene based on the scene ID
+    const getSceneAgent = (sceneId: string) => {
+      const agentMap: Record<string, string> = {
+        'scout-research': 'Scout',
+        'muse-strategy': 'Muse',
+        'echo-content': 'Echo',
+        'atlas-compliance': 'Atlas'
+      };
+      return agentMap[sceneId] || null;
+    };
+
+    // Set the talking agent for the entire scene
+    const sceneAgent = getSceneAgent(currentScene.id);
+    if (sceneAgent && currentMessageIndex === 0) {
+      setTalkingAgent(sceneAgent);
+    }
+
     const currentMessage = currentScene.messages[currentMessageIndex];
     if (!currentMessage) {
-      // Move to next scene
+      // Move to next scene - wait longer between scenes
       if (currentSceneIndex < demoScript.length - 1) {
-        setTimeout(() => {
+        const sceneTransitionTimer = setTimeout(() => {
           setCurrentSceneIndex(prev => prev + 1);
           setCurrentMessageIndex(0);
-        }, 2000);
+          setTalkingAgent(null); // Clear talking agent between scenes
+        }, 5000); // Wait 5 seconds between scenes
+        return () => clearTimeout(sceneTransitionTimer);
       } else {
         setIsPlaying(false);
+        setTalkingAgent(null);
       }
       return;
     }
-
-    // Set talking agent
-    setTalkingAgent(currentMessage.agent);
 
     // Add message after delay
     const timer = setTimeout(() => {
@@ -100,8 +116,8 @@ const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate
         });
       }
 
-      // Process ClickUp updates
-      if (currentScene.clickUpUpdates && onClickUpUpdate) {
+      // Process ClickUp updates only on the first message of the scene
+      if (currentMessageIndex === 0 && currentScene.clickUpUpdates && onClickUpUpdate) {
         currentScene.clickUpUpdates.forEach(update => {
           setTimeout(() => {
             onClickUpUpdate(update.updates);
@@ -146,6 +162,8 @@ const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate
 
   const skipToNextScene = () => {
     if (currentSceneIndex < demoScript.length - 1) {
+      // Clear talking agent when skipping
+      setTalkingAgent(null);
       setCurrentSceneIndex(prev => prev + 1);
       setCurrentMessageIndex(0);
       if (!isPlaying) setIsPlaying(true);

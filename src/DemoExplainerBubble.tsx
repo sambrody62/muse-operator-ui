@@ -83,16 +83,6 @@ const DemoExplainerBubble: React.FC<DemoExplainerBubbleProps> = ({
                 {description}
               </p>
             </div>
-
-            {/* Progress Bar */}
-            <div className="mt-4">
-              <div className="w-full bg-white/20 rounded-full h-1.5">
-                <div
-                  className="bg-white h-1.5 rounded-full transition-all duration-500"
-                  style={{ width: `${(step / totalSteps) * 100}%` }}
-                />
-              </div>
-            </div>
           </>
         ) : (
           /* Minimized State */

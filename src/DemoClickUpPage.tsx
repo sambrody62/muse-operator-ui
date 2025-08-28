@@ -93,21 +93,6 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
       {/* Main Content */}
       <div className="flex-1 overflow-auto">
         <div className="max-w-4xl mx-auto p-6">
-          {/* Progress Bar */}
-          {progress > 0 && (
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">Progress</span>
-                <span className="text-sm text-gray-600">{progress}%</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-green-500 h-2 rounded-full transition-all duration-1000 ease-out"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-            </div>
-          )}
 
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
