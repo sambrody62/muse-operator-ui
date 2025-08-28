@@ -140,6 +140,8 @@ function DemoApp() {
         onClose={() => setShowEndOverlay(false)}
         onLearnMore={() => {
           setShowEndOverlay(false);
+          // Stop the original background music before transitioning
+          stopMusic();
           setShowKnowledgeFactory(true);
         }}
       />

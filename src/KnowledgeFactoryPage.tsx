@@ -50,14 +50,13 @@ export default function KnowledgeFactoryPage({
   const musicRef = useRef<HTMLAudioElement | null>(null);
   const narrationRef = useRef<HTMLAudioElement | null>(null);
 
-  // Initialize and play background music when walkthrough starts
+  // Initialize and play Space AI background music when page loads
   useEffect(() => {
-    if (showWalk && !musicRef.current) {
-      musicRef.current = new Audio('/audio/background-music.mp3');
-      musicRef.current.volume = 0.14; // Same volume as main demo
-      musicRef.current.loop = false;
-      musicRef.current.play().catch(err => console.log('Failed to play background music:', err));
-    }
+    // Start music immediately when component mounts
+    musicRef.current = new Audio('/audio/space-ai-music.mp3');
+    musicRef.current.volume = 0.14; // Same volume as main demo
+    musicRef.current.loop = true; // Loop this atmospheric music
+    musicRef.current.play().catch(err => console.log('Failed to play Space AI music:', err));
     
     // Cleanup on unmount
     return () => {
@@ -70,7 +69,7 @@ export default function KnowledgeFactoryPage({
         narrationRef.current = null;
       }
     };
-  }, [showWalk]);
+  }, []); // Run only on mount/unmount
 
   // Play narration for current step and advance when finished
   useEffect(() => {
@@ -257,11 +256,7 @@ export default function KnowledgeFactoryPage({
               narrationRef.current.pause();
               narrationRef.current = null;
             }
-            // Restart music when replaying
-            if (musicRef.current) {
-              musicRef.current.currentTime = 0;
-              musicRef.current.play().catch(err => console.log('Failed to replay music:', err));
-            }
+            // Music continues playing (Space AI music loops continuously)
           }} className="rounded-lg border border-blue-400/60 bg-black/40 px-3 py-2 text-blue-200 hover:bg-black/60 text-sm">
             ↺ Replay Walkthrough
           </button>
