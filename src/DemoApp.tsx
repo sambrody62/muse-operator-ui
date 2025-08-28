@@ -93,7 +93,7 @@ function DemoApp() {
 
   // If showing Knowledge Factory page, render that instead
   if (showKnowledgeFactory) {
-    return <KnowledgeFactoryPage />;
+    return <KnowledgeFactoryPage onBack={() => setShowKnowledgeFactory(false)} />;
   }
 
   return (

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { ArrowLeft } from 'lucide-react';
 import { knowledgeFactoryScript } from './KnowledgeFactoryScript';
 
 /**
@@ -32,12 +33,14 @@ interface KnowledgeFactoryPageProps {
   title?: string;
   dataSources?: typeof defaultDataSources;
   agents?: typeof defaultAgents;
+  onBack?: () => void;
 }
 
 export default function KnowledgeFactoryPage({
   title = "Nucleus Creative Engine",
   dataSources = defaultDataSources,
   agents = defaultAgents,
+  onBack,
 }: KnowledgeFactoryPageProps) {
   const [isPaused, setIsPaused] = useState(false);
   const steps = ["inputs", "nucleus", "boxes", "agents", "wrap"] as const;
@@ -111,6 +114,17 @@ export default function KnowledgeFactoryPage({
 
   return (
     <div className="min-h-screen w-full p-4 sm:p-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+      {/* Back Button */}
+      {onBack && (
+        <button
+          onClick={onBack}
+          className="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 bg-slate-800/80 hover:bg-slate-700/80 text-white rounded-lg transition-colors backdrop-blur-sm border border-slate-600"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span>Back to Demo</span>
+        </button>
+      )}
+      
       <style>{`
         @keyframes packetOut { 0%{opacity:0; transform:translateX(0);} 20%{opacity:1;} 80%{opacity:1;} 100%{opacity:0; transform:translateX(200px);} }
         @keyframes packetIn { 0%{opacity:0; transform:translateX(0);} 20%{opacity:1;} 80%{opacity:1;} 100%{opacity:0; transform:translateX(-200px);} }
