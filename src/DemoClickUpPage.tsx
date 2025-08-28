@@ -18,47 +18,94 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
   // Process updates from demo
   useEffect(() => {
     if (updates && updates.length > 0) {
-      updates.forEach(update => {
-        // Highlight the field
-        setHighlightedFields(prev => {
-          const newSet = new Set(prev);
-          newSet.add(update.field);
-          return newSet;
-        });
+      updates.forEach((update, index) => {
+        // Add delay for each update to scroll sequentially
         setTimeout(() => {
-          setHighlightedFields(prev => {
-            const newSet = new Set(prev);
-            newSet.delete(update.field);
-            return newSet;
-          });
-        }, 2000);
+          // Scroll to the element before updating
+          const scrollToElement = () => {
+            let targetId = '';
+            
+            // Map update fields to element IDs
+            switch (update.field) {
+              case 'status':
+                targetId = 'status-section';
+                break;
+              case 'document':
+                targetId = 'documents-section';
+                break;
+              case 'subtask-1':
+              case 'subtask-2':
+              case 'subtask-3':
+              case 'subtask-4':
+              case 'subtask-5':
+              case 'subtask-6':
+                targetId = 'subtasks-section';
+                break;
+              case 'progress':
+                targetId = 'progress-section';
+                break;
+              case 'priority':
+                targetId = 'priority-section';
+                break;
+            }
+            
+            if (targetId) {
+              const element = document.getElementById(targetId);
+              if (element) {
+                element.scrollIntoView({ 
+                  behavior: 'smooth', 
+                  block: 'center'
+                });
+              }
+            }
+          };
+          
+          // Scroll first, then apply update after a short delay
+          scrollToElement();
+          
+          setTimeout(() => {
+            // Highlight the field
+            setHighlightedFields(prev => {
+              const newSet = new Set(prev);
+              newSet.add(update.field);
+              return newSet;
+            });
+            setTimeout(() => {
+              setHighlightedFields(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(update.field);
+                return newSet;
+              });
+            }, 2000);
 
-        // Apply the update
-        switch (update.field) {
-          case 'status':
-            setStatus(update.value);
-            break;
-          case 'progress':
-            setProgress(update.value);
-            break;
-          case 'priority':
-            setPriority(update.value);
-            break;
-          case 'subtask-1':
-          case 'subtask-2':
-          case 'subtask-3':
-            setSubtasks(prev => [...prev, update.value]);
-            break;
-          case 'document':
-            // Add a new document
-            setDocuments(prev => [...prev, {
-              id: `doc-${Date.now()}`,
-              name: update.value,
-              icon: '📄',
-              addedAt: Date.now()
-            }]);
-            break;
-        }
+            // Apply the update
+            switch (update.field) {
+              case 'status':
+                setStatus(update.value);
+                break;
+              case 'progress':
+                setProgress(update.value);
+                break;
+              case 'priority':
+                setPriority(update.value);
+                break;
+              case 'subtask-1':
+              case 'subtask-2':
+              case 'subtask-3':
+                setSubtasks(prev => [...prev, update.value]);
+                break;
+              case 'document':
+                // Add a new document
+                setDocuments(prev => [...prev, {
+                  id: `doc-${Date.now()}`,
+                  name: update.value,
+                  icon: '📄',
+                  addedAt: Date.now()
+                }]);
+                break;
+            }
+          }, 800); // Delay after scroll to apply update
+        }, index * 500); // Stagger updates
       });
     }
   }, [updates]);
@@ -163,10 +210,25 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
             </div>
           </div>
 
+          {/* Subtasks Progress */}
+          {subtasks.length > 0 && (
+            <div id="subtasks-section" className="mb-6">
+              <h3 className="text-sm font-medium text-gray-700 mb-3">Task Progress</h3>
+              <div className="space-y-2">
+                {subtasks.map((task, index) => (
+                  <div key={index} className="flex items-center text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 mr-2" />
+                    <span className="text-gray-700">{task}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Task Details */}
           <div className="space-y-4 mb-6">
             {/* Status */}
-            <div className={`flex items-center transition-all duration-300 ${getFieldClass('status')}`} data-field="status">
+            <div id="status-section" className={`flex items-center transition-all duration-300 ${getFieldClass('status')}`} data-field="status">
               <div className="w-32 text-sm text-gray-600">Status</div>
               <div className={`px-3 py-1.5 rounded text-sm font-medium transition-all duration-300 ${
                 status === 'IN PROGRESS' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'
@@ -198,7 +260,7 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
             </div>
 
             {/* Priority */}
-            <div className={`flex items-center ${getFieldClass('priority')}`} data-field="priority">
+            <div id="priority-section" className={`flex items-center ${getFieldClass('priority')}`} data-field="priority">
               <div className="w-32 text-sm text-gray-600">Priority</div>
               <div className={`px-2 py-1 rounded text-sm font-medium ${
                 priority === 'High' ? 'bg-orange-100 text-orange-600' : 'bg-gray-100 text-gray-600'
@@ -268,7 +330,7 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
           </div>
 
           {/* Documents */}
-          <div className="mb-6">
+          <div id="documents-section" className="mb-6">
             <h3 className="text-sm font-medium text-gray-700 mb-3 flex items-center">
               <FileText className="w-4 h-4 mr-1" />
               Documents
