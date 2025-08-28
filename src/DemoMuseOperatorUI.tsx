@@ -66,19 +66,29 @@ const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate
       const agentMap: Record<string, string> = {
         'scout-research': 'Scout',
         'muse-strategy': 'Muse',
+        'echo-scout-collab': 'Echo', // Echo leads the collaboration
         'echo-content': 'Echo',
         'atlas-compliance': 'Atlas'
       };
       return agentMap[sceneId] || null;
     };
 
+    const currentMessage = currentScene.messages[currentMessageIndex];
+    
     // Set the talking agent for the entire scene
     const sceneAgent = getSceneAgent(currentScene.id);
     if (sceneAgent && currentMessageIndex === 0) {
       setTalkingAgent(sceneAgent);
     }
-
-    const currentMessage = currentScene.messages[currentMessageIndex];
+    
+    // For collaboration scene, update the talking agent based on who's speaking
+    if (currentScene.id === 'echo-scout-collab' && currentMessage) {
+      if (currentMessage.agent === 'Scout') {
+        setTalkingAgent('Scout');
+      } else if (currentMessage.agent === 'Echo') {
+        setTalkingAgent('Echo');
+      }
+    }
     if (!currentMessage) {
       // Move to next scene - wait longer between scenes
       if (currentSceneIndex < demoScript.length - 1) {

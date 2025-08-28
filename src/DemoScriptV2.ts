@@ -64,7 +64,7 @@ export const demoScript: DemoScene[] = [
         delay: 2000,
         updates: [
           { field: 'subtask-1', value: '✓ Market Research', animate: true },
-          { field: 'progress', value: 25, animate: true }
+          { field: 'progress', value: 20, animate: true }
         ]
       }
     ]
@@ -101,7 +101,56 @@ export const demoScript: DemoScene[] = [
         delay: 2000,
         updates: [
           { field: 'subtask-2', value: '✓ Campaign Strategy', animate: true },
-          { field: 'progress', value: 50, animate: true }
+          { field: 'progress', value: 40, animate: true }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'echo-scout-collab',
+    name: 'Agent Collaboration',
+    explainer: {
+      title: '🤝 Agents Working Together',
+      description: 'Watch how agents collaborate seamlessly. Echo needs research from Scout to write targeted content.'
+    },
+    messages: [
+      {
+        id: 7,
+        agent: 'Operator',
+        content: "I need influencer outreach messages that actually convert. This usually takes me all day to research and write.",
+        delay: 800
+      },
+      {
+        id: 8,
+        agent: 'Echo',
+        content: "I'll write personalized outreach messages. Scout, can you quickly research top eco-influencers and their content styles?",
+        delay: 1500
+      },
+      {
+        id: 9,
+        agent: 'Scout',
+        content: "✅ Found 3 perfect matches: @SustainableSara (lifestyle focus, loves storytelling), @EcoWarriorMike (data-driven content), @GreenGenZ (humor and memes). All have 5%+ engagement rates.",
+        delay: 2000
+      },
+      {
+        id: 10,
+        agent: 'Echo',
+        content: "Perfect! ✅ Personalized messages ready: Sara gets storytelling angle about our founder's journey. Mike gets impact data (1M bottles saved). GenZ gets meme-worthy collab idea. Each message tailored to their voice.",
+        delay: 2000
+      },
+      {
+        id: 11,
+        agent: 'Operator',
+        content: "This agent teamwork is incredible! You researched AND wrote personalized outreach in 30 seconds. This saves me an entire day!",
+        delay: 1200
+      }
+    ],
+    clickUpUpdates: [
+      {
+        delay: 2000,
+        updates: [
+          { field: 'subtask-3', value: '✓ Influencer Outreach', animate: true },
+          { field: 'progress', value: 60, animate: true }
         ]
       }
     ]
@@ -115,19 +164,19 @@ export const demoScript: DemoScene[] = [
     },
     messages: [
       {
-        id: 7,
+        id: 12,
         agent: 'Operator',
         content: "Generate the launch content and social copy. Getting the tone right usually takes me 3+ hours of rewrites.",
         delay: 800
       },
       {
-        id: 8,
+        id: 13,
         agent: 'Echo',
         content: "✅ Launch content ready: 'Meet EcoBottle 💧 Every refill saves 3 plastic bottles from our oceans. Join 50,000+ changemakers making waves for our planet. Your daily choice, their future. #RefillRevolution #EcoTok'",
         delay: 2000
       },
       {
-        id: 9,
+        id: 14,
         agent: 'Operator',
         content: "The tone is perfect! You captured our brand voice better than my own drafts. 3 hours → 30 seconds.",
         delay: 1200
@@ -137,8 +186,8 @@ export const demoScript: DemoScene[] = [
       {
         delay: 2000,
         updates: [
-          { field: 'subtask-3', value: '✓ Content Creation', animate: true },
-          { field: 'progress', value: 75, animate: true }
+          { field: 'subtask-4', value: '✓ Content Creation', animate: true },
+          { field: 'progress', value: 80, animate: true }
         ]
       }
     ]
@@ -152,19 +201,19 @@ export const demoScript: DemoScene[] = [
     },
     messages: [
       {
-        id: 10,
+        id: 15,
         agent: 'Operator',
         content: "Review everything for legal compliance. Our legal team usually takes 1-2 weeks for this.",
         delay: 800
       },
       {
-        id: 11,
+        id: 16,
         agent: 'Atlas',
         content: "✅ Compliance verified: '3 bottles saved' claim substantiated by EPA data. 'Eco-friendly' meets FTC Green Guides. All hashtags trademark-clear. Zero legal risks identified. Ready to publish.",
         delay: 2000
       },
       {
-        id: 12,
+        id: 17,
         agent: 'Operator',
         content: "You just eliminated 2 weeks of legal back-and-forth! We can launch immediately.",
         delay: 1200
@@ -174,7 +223,7 @@ export const demoScript: DemoScene[] = [
       {
         delay: 2000,
         updates: [
-          { field: 'subtask-4', value: '✓ Compliance Check', animate: true },
+          { field: 'subtask-5', value: '✓ Compliance Check', animate: true },
           { field: 'progress', value: 100, animate: true },
           { field: 'status', value: 'READY TO LAUNCH', animate: true }
         ]
