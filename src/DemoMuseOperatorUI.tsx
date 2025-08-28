@@ -63,13 +63,15 @@ const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate
         if (currentSceneIndex < demoScript.length - 1) {
           // Add a small delay for smooth transition
           const timer = setTimeout(() => {
+            console.log('Audio complete, advancing from scene', currentSceneIndex, 'to', currentSceneIndex + 1);
             setCurrentSceneIndex(prev => prev + 1);
             setCurrentMessageIndex(0);
+            setMessages([]); // Clear messages for new scene
             setTalkingAgent(null);
             if (onSpeechHandled) {
               onSpeechHandled(); // Reset the flag
             }
-          }, 2000); // 2 second delay after speech ends
+          }, 1500); // 1.5 second delay after speech ends
           return () => clearTimeout(timer);
         } else {
           // Last scene done
@@ -119,22 +121,9 @@ const DemoMuseOperatorUI: React.FC<DemoMuseOperatorUIProps> = ({ onClickUpUpdate
       }
     }
     if (!currentMessage) {
-      // Scene messages complete - wait for speech to finish
-      // Add a fallback timer in case speech doesn't complete
-      if (currentSceneIndex < demoScript.length - 1) {
-        const fallbackTimer = setTimeout(() => {
-          // Fallback: advance after max wait time if speech hasn't triggered
-          console.log('Using fallback timer to advance scene');
-          setCurrentSceneIndex(prev => prev + 1);
-          setCurrentMessageIndex(0);
-          setTalkingAgent(null);
-        }, 15000); // 15 second fallback
-        return () => clearTimeout(fallbackTimer);
-      } else {
-        // Last scene completed
-        setIsPlaying(false);
-        setTalkingAgent(null);
-      }
+      // Scene messages complete - now we just wait for audio to finish
+      // The speechComplete effect above will handle advancing to next scene
+      // Don't set any timers here - let audio drive the progression
       return;
     }
 
