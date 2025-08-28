@@ -237,25 +237,25 @@ export const demoScript: DemoScene[] = [
     name: 'System Integration',
     explainer: {
       title: 'The Complete Picture',
-      description: 'Look at what just happened. Sarah completed a three day project in fifteen minutes. Every task in ClickUp has been updated automatically. The entire Nucleus system now has her campaign ready to deploy. This is not about replacing Sarah. This is about making her unstoppable.'
+      description: 'Watch Sarah\'s transformation. What normally takes three full days just happened in fifteen minutes. Every document created, every strategy perfected, every task completed. Sarah isn\'t just meeting deadlines anymore - she\'s setting the pace. This is Sarah supercharged. This is the future of work where human creativity meets AI acceleration.'
     },
     messages: [
       {
         id: 18,
         agent: 'Operator',
-        content: "Wait, I just noticed ClickUp shows everything as complete. Did you update all my project management automatically?",
+        content: "This is amazing - I have complete strategies, researched content, and compliance-checked materials all ready to go. What used to consume my entire week is done!",
         delay: 800
       },
       {
         id: 19,
         agent: 'Muse',
-        content: "✅ Everything is synchronized: ClickUp tasks updated, Nucleus campaign deployed, analytics configured, team notifications sent. Your entire workflow is ready.",
+        content: "✅ Your complete campaign is live: Market research documented, strategy deployed, influencer templates personalized, content approved, all systems synchronized. You're operating at 10x speed with higher quality than ever.",
         delay: 2000
       },
       {
         id: 20,
         agent: 'Operator',
-        content: "This is incredible! I went from overwhelmed to ahead of schedule. I can actually leave early today and still deliver more than ever before. This changes everything!",
+        content: "I can focus on the big picture now - the creative vision, the client relationships, the strategic decisions that actually need my expertise. My productivity just went through the roof!",
         delay: 1800
       }
     ],
