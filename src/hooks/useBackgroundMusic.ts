@@ -16,7 +16,7 @@ export const useBackgroundMusic = (musicPath: string = '/audio/background-music.
     // Create audio element on mount
     const audio = new Audio(musicPath);
     audio.loop = true; // Loop the background music
-    audio.volume = 0.2; // Low volume for background
+    audio.volume = 0.14; // Reduced by 30% from 0.2 for quieter background
     audioRef.current = audio;
 
     audio.addEventListener('play', () => setIsPlaying(true));
