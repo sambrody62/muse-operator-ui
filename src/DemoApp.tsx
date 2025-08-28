@@ -4,6 +4,7 @@ import ChromeExtensionButton from './ChromeExtensionButton';
 import DemoClickUpPage from './DemoClickUpPage';
 import DemoMuseOperatorUI from './DemoMuseOperatorUI';
 import DemoExplainerBubble from './DemoExplainerBubble';
+import DemoEndOverlay from './DemoEndOverlay';
 import { demoScript } from './DemoScriptV2';
 import { useLocalAudio } from './hooks/useLocalAudio';
 import { useBackgroundMusic } from './hooks/useBackgroundMusic';
@@ -14,6 +15,7 @@ function DemoApp() {
   const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
   const [showExplainer, setShowExplainer] = useState(true);
   const [speechComplete, setSpeechComplete] = useState(false);
+  const [showEndOverlay, setShowEndOverlay] = useState(false);
   
   // Initialize local audio playback with callback when speech ends
   const { speak: speakAudio, stop: stopAudio } = useLocalAudio(
@@ -45,6 +47,14 @@ function DemoApp() {
 
   const handleSceneChange = (sceneIndex: number) => {
     setCurrentSceneIndex(sceneIndex);
+    
+    // Check if we've reached the last scene
+    if (sceneIndex === demoScript.length - 1) {
+      // Show overlay after a delay when last scene starts
+      setTimeout(() => {
+        setShowEndOverlay(true);
+      }, 15000); // Show after 15 seconds (adjust based on last scene duration)
+    }
   };
 
   const currentScene = demoScript[currentSceneIndex];
@@ -116,6 +126,12 @@ function DemoApp() {
           onClose={() => setShowExplainer(false)}
         />
       )}
+      
+      {/* End of Demo Overlay */}
+      <DemoEndOverlay 
+        isVisible={showEndOverlay}
+        onClose={() => setShowEndOverlay(false)}
+      />
     </div>
   );
 }
