@@ -5,6 +5,7 @@ import DemoClickUpPage from './DemoClickUpPage';
 import DemoMuseOperatorUI from './DemoMuseOperatorUI';
 import DemoExplainerBubble from './DemoExplainerBubble';
 import DemoEndOverlay from './DemoEndOverlay';
+import KnowledgeFactoryPage from './KnowledgeFactoryPage';
 import { demoScript } from './DemoScriptV2';
 import { useLocalAudio } from './hooks/useLocalAudio';
 import { useBackgroundMusic } from './hooks/useBackgroundMusic';
@@ -16,6 +17,7 @@ function DemoApp() {
   const [showExplainer, setShowExplainer] = useState(true);
   const [speechComplete, setSpeechComplete] = useState(false);
   const [showEndOverlay, setShowEndOverlay] = useState(false);
+  const [showKnowledgeFactory, setShowKnowledgeFactory] = useState(false);
   
   // Initialize local audio playback with callback when speech ends
   const { speak: speakAudio, stop: stopAudio } = useLocalAudio(
@@ -89,6 +91,11 @@ function DemoApp() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSceneIndex, showExplainer, isMuseVisible]); // Intentionally exclude function deps to prevent loops
 
+  // If showing Knowledge Factory page, render that instead
+  if (showKnowledgeFactory) {
+    return <KnowledgeFactoryPage />;
+  }
+
   return (
     <div className="relative h-screen bg-gray-100 overflow-hidden">
       {/* Chrome Extension Button */}
@@ -131,6 +138,10 @@ function DemoApp() {
       <DemoEndOverlay 
         isVisible={showEndOverlay}
         onClose={() => setShowEndOverlay(false)}
+        onLearnMore={() => {
+          setShowEndOverlay(false);
+          setShowKnowledgeFactory(true);
+        }}
       />
     </div>
   );

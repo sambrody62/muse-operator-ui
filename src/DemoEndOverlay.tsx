@@ -4,15 +4,11 @@ import { X } from 'lucide-react';
 interface DemoEndOverlayProps {
   isVisible: boolean;
   onClose: () => void;
+  onLearnMore: () => void;
 }
 
-const DemoEndOverlay: React.FC<DemoEndOverlayProps> = ({ isVisible, onClose }) => {
+const DemoEndOverlay: React.FC<DemoEndOverlayProps> = ({ isVisible, onClose, onLearnMore }) => {
   if (!isVisible) return null;
-
-  const handleLearnMore = () => {
-    // You can update this URL to wherever you want to direct users
-    window.open('https://nucleus.ai', '_blank');
-  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center animate-fade-in">
@@ -53,7 +49,7 @@ const DemoEndOverlay: React.FC<DemoEndOverlayProps> = ({ isVisible, onClose }) =
           
           {/* CTA Button */}
           <button
-            onClick={handleLearnMore}
+            onClick={onLearnMore}
             className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-200"
           >
             Learn More
