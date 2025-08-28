@@ -6,6 +6,7 @@ import DemoMuseOperatorUI from './DemoMuseOperatorUI';
 import DemoExplainerBubble from './DemoExplainerBubble';
 import { demoScript } from './DemoScriptV2';
 import { useLocalAudio } from './hooks/useLocalAudio';
+import { useBackgroundMusic } from './hooks/useBackgroundMusic';
 
 function DemoApp() {
   const [isMuseVisible, setIsMuseVisible] = useState(false);
@@ -18,14 +19,21 @@ function DemoApp() {
   const { speak: speakAudio, stop: stopAudio } = useLocalAudio(
     () => setSpeechComplete(true) // Called when narration finishes
   );
+  
+  // Initialize background music
+  const { play: playMusic, stop: stopMusic, setVolume: setMusicVolume } = useBackgroundMusic();
 
   const handleExtensionClick = () => {
     setIsMuseVisible(!isMuseVisible);
     if (!isMuseVisible) {
       // Start showing explainer immediately when panel opens
       setShowExplainer(true);
+      // Start background music when demo begins
+      playMusic();
     } else {
       setShowExplainer(false);
+      // Stop music when closing demo
+      stopMusic();
     }
   };
 
