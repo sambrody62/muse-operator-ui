@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { knowledgeFactoryScript } from './KnowledgeFactoryScript';
 
 /**
  * Demo-ready React component you can run directly in a React + Tailwind project.
@@ -43,34 +44,68 @@ export default function KnowledgeFactoryPage({
   type Step = typeof steps[number];
   const [stepIndex, setStepIndex] = useState(0);
   const [showWalk, setShowWalk] = useState(true);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const musicRef = useRef<HTMLAudioElement | null>(null);
+  const narrationRef = useRef<HTMLAudioElement | null>(null);
 
   // Initialize and play background music when walkthrough starts
   useEffect(() => {
-    if (showWalk && !audioRef.current) {
-      audioRef.current = new Audio('/audio/background-music.mp3');
-      audioRef.current.volume = 0.14; // Same volume as main demo
-      audioRef.current.loop = false;
-      audioRef.current.play().catch(err => console.log('Failed to play background music:', err));
+    if (showWalk && !musicRef.current) {
+      musicRef.current = new Audio('/audio/background-music.mp3');
+      musicRef.current.volume = 0.14; // Same volume as main demo
+      musicRef.current.loop = false;
+      musicRef.current.play().catch(err => console.log('Failed to play background music:', err));
     }
     
     // Cleanup on unmount
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
+      if (musicRef.current) {
+        musicRef.current.pause();
+        musicRef.current = null;
+      }
+      if (narrationRef.current) {
+        narrationRef.current.pause();
+        narrationRef.current = null;
       }
     };
   }, [showWalk]);
 
+  // Play narration for current step and advance when finished
   useEffect(() => {
-    if (!showWalk) return;
-    const advance = setTimeout(() => {
-      if (stepIndex < steps.length - 1) setStepIndex(stepIndex + 1);
-      else setShowWalk(false);
-    }, 4000);
-    return () => clearTimeout(advance);
-  }, [stepIndex, showWalk, steps.length]);
+    if (!showWalk || isPaused) return;
+
+    // Stop any existing narration
+    if (narrationRef.current) {
+      narrationRef.current.pause();
+      narrationRef.current = null;
+    }
+
+    // Find the current script
+    const currentScript = knowledgeFactoryScript[stepIndex];
+    if (!currentScript) return;
+
+    // Play narration with slight delay for UI to render
+    const playTimer = setTimeout(() => {
+      narrationRef.current = new Audio(`/audio/${currentScript.id}.mp3`);
+      narrationRef.current.volume = 0.7;
+      
+      // When narration ends, advance to next step
+      narrationRef.current.addEventListener('ended', () => {
+        if (stepIndex < steps.length - 1) {
+          setStepIndex(prev => prev + 1);
+        } else {
+          setShowWalk(false);
+        }
+      });
+
+      narrationRef.current.play().catch(err => 
+        console.log('Failed to play narration:', err)
+      );
+    }, 500);
+
+    return () => {
+      clearTimeout(playTimer);
+    };
+  }, [stepIndex, showWalk, isPaused, steps.length]);
 
   const currentStep: Step = steps[stepIndex];
 
@@ -186,24 +221,54 @@ export default function KnowledgeFactoryPage({
         {/* Controls */}
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <span className="text-slate-300 text-sm">Step {stepIndex + 1} of {steps.length}</span>
-          <button onClick={()=>setIsPaused(p=>!p)} className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+          <button onClick={()=>{
+            setIsPaused(p=>!p);
+            // Pause/resume narration
+            if (narrationRef.current) {
+              if (isPaused) {
+                narrationRef.current.play();
+              } else {
+                narrationRef.current.pause();
+              }
+            }
+          }} className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
             {isPaused?"▶️ Resume":"⏸️ Pause"} Flow
           </button>
           <button onClick={()=>{ 
             setShowWalk(true); 
             setStepIndex(0);
+            setIsPaused(false);
+            // Stop current narration
+            if (narrationRef.current) {
+              narrationRef.current.pause();
+              narrationRef.current = null;
+            }
             // Restart music when replaying
-            if (audioRef.current) {
-              audioRef.current.currentTime = 0;
-              audioRef.current.play().catch(err => console.log('Failed to replay music:', err));
+            if (musicRef.current) {
+              musicRef.current.currentTime = 0;
+              musicRef.current.play().catch(err => console.log('Failed to replay music:', err));
             }
           }} className="rounded-lg border border-blue-400/60 bg-black/40 px-3 py-2 text-blue-200 hover:bg-black/60 text-sm">
             ↺ Replay Walkthrough
           </button>
-          <button onClick={()=> setStepIndex(Math.max(0, stepIndex-1))} disabled={stepIndex===0} className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-slate-200 hover:bg-slate-700 text-sm disabled:opacity-40">
+          <button onClick={()=> {
+            // Stop current narration
+            if (narrationRef.current) {
+              narrationRef.current.pause();
+              narrationRef.current = null;
+            }
+            setStepIndex(Math.max(0, stepIndex-1));
+          }} disabled={stepIndex===0} className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-slate-200 hover:bg-slate-700 text-sm disabled:opacity-40">
             ◀ Prev
           </button>
-          <button onClick={()=> setStepIndex(Math.min(steps.length-1, stepIndex+1))} disabled={stepIndex===steps.length-1} className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-slate-200 hover:bg-slate-700 text-sm disabled:opacity-40">
+          <button onClick={()=> {
+            // Stop current narration
+            if (narrationRef.current) {
+              narrationRef.current.pause();
+              narrationRef.current = null;
+            }
+            setStepIndex(Math.min(steps.length-1, stepIndex+1));
+          }} disabled={stepIndex===steps.length-1} className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-slate-200 hover:bg-slate-700 text-sm disabled:opacity-40">
             Next ▶
           </button>
         </div>
