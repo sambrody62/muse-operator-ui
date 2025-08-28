@@ -196,36 +196,36 @@ export default function KnowledgeFactoryPage({
           </div>
 
           {/* Tooltip Walkthrough */}
-          {showWalk && (
+          {showWalk && knowledgeFactoryScript[stepIndex] && (
             <div className="absolute inset-0 pointer-events-none">
               {currentStep === "inputs" && (
                 <div className="absolute left-6 top-24 max-w-sm rounded-lg border border-blue-400/60 bg-black/70 p-3 text-sm text-blue-100">
-                  <strong className="block text-blue-300 mb-1">1/5 · Context In</strong>
-                  Nucleus gathers context from meetings, numbers, ads, and files so you can focus on strategy and creativity.
+                  <strong className="block text-blue-300 mb-1">{knowledgeFactoryScript[stepIndex].title}</strong>
+                  {knowledgeFactoryScript[stepIndex].narration}
                 </div>
               )}
               {currentStep === "nucleus" && (
                 <div className="absolute left-1/2 top-[22%] -translate-x-1/2 max-w-sm rounded-lg border border-blue-400/60 bg-black/70 p-3 text-sm text-blue-100">
-                  <strong className="block text-blue-300 mb-1">2/5 · The Creative Partner</strong>
-                  Nucleus is like your co-pilot — a creative prediction engine that supports you by suggesting ideas rooted in real data.
+                  <strong className="block text-blue-300 mb-1">{knowledgeFactoryScript[stepIndex].title}</strong>
+                  {knowledgeFactoryScript[stepIndex].narration}
                 </div>
               )}
               {currentStep === "boxes" && (
                 <div className="absolute left-1/2 bottom-[28%] -translate-x-1/2 max-w-md rounded-lg border border-blue-400/60 bg-black/70 p-3 text-sm text-blue-100">
-                  <strong className="block text-blue-300 mb-1">3/5 · What Fuels It</strong>
-                  Nucleus builds on a strong foundation — databases, fine-tuned models, agent knowledge, and Ladder data — so you don't have to start from scratch.
+                  <strong className="block text-blue-300 mb-1">{knowledgeFactoryScript[stepIndex].title}</strong>
+                  {knowledgeFactoryScript[stepIndex].narration}
                 </div>
               )}
               {currentStep === "agents" && (
                 <div className="absolute right-6 top-24 max-w-sm rounded-lg border border-blue-400/60 bg-black/70 p-3 text-sm text-blue-100">
-                  <strong className="block text-blue-300 mb-1">4/5 · Teamwork</strong>
-                  Nucleus works alongside Scout, Muse, Echo, Atlas, and Beacon. It shares insights, takes in feedback, and makes each of your outputs stronger. Every output from these agents also makes Nucleus smarter over time.
+                  <strong className="block text-blue-300 mb-1">{knowledgeFactoryScript[stepIndex].title}</strong>
+                  {knowledgeFactoryScript[stepIndex].narration}
                 </div>
               )}
               {currentStep === "wrap" && (
                 <div className="absolute left-1/2 bottom-6 -translate-x-1/2 max-w-xl rounded-lg border border-blue-400/60 bg-black/70 p-3 text-sm text-blue-100">
-                  <strong className="block text-blue-300 mb-1">5/5 · Why It Matters</strong>
-                  Every time you and your team give feedback, Nucleus learns. That means your job gets easier, your campaigns get smarter, and your creative impact grows.
+                  <strong className="block text-blue-300 mb-1">{knowledgeFactoryScript[stepIndex].title}</strong>
+                  {knowledgeFactoryScript[stepIndex].narration}
                 </div>
               )}
             </div>
