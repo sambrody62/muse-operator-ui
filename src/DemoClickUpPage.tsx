@@ -12,7 +12,7 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
   const [progress, setProgress] = useState(0);
   const [subtasks, setSubtasks] = useState<string[]>([]);
   const [highlightedFields, setHighlightedFields] = useState<Set<string>>(new Set());
-  const [documents, setDocuments] = useState<Array<{id: string, name: string, icon: string, addedAt: number}>>([]);
+  const [documents, setDocuments] = useState<Array<{id: string, name: string, icon: string, addedBy: string, addedAt: number}>>([]);
   const description = 'Develop comprehensive social media strategy for eco-friendly water bottle launch targeting millennials and Gen Z. Deliverables include platform strategy, content calendar, influencer partnerships, community building approach, and budget allocation across 6-week campaign timeline.';
 
   // Process updates from demo
@@ -95,11 +95,25 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
                 setSubtasks(prev => [...prev, update.value]);
                 break;
               case 'document':
-                // Add a new document
+                // Add a new document with the correct agent attribution
+                let addedBy = 'Muse AI';
+                if (update.value.includes('Market Research')) {
+                  addedBy = 'Scout';
+                } else if (update.value.includes('Campaign Strategy')) {
+                  addedBy = 'Muse';
+                } else if (update.value.includes('Influencer Outreach')) {
+                  addedBy = 'Scout';
+                } else if (update.value.includes('Content')) {
+                  addedBy = 'Echo';
+                } else if (update.value.includes('Compliance')) {
+                  addedBy = 'Atlas';
+                }
+                
                 setDocuments(prev => [...prev, {
                   id: `doc-${Date.now()}`,
                   name: update.value,
                   icon: '📄',
+                  addedBy: addedBy,
                   addedAt: Date.now()
                 }]);
                 break;
@@ -347,7 +361,7 @@ const DemoClickUpPage: React.FC<DemoClickUpPageProps> = ({ updates = [] }) => {
                     <span className="text-xl mr-3">{doc.icon}</span>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-700">{doc.name}</p>
-                      <p className="text-xs text-gray-500">Added by Muse AI</p>
+                      <p className="text-xs text-gray-500">Added by {doc.addedBy}</p>
                     </div>
                     <CheckCircle2 className="w-5 h-5 text-green-500" />
                   </div>
