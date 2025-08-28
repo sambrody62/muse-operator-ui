@@ -4,8 +4,8 @@ import IntegratedApp from './IntegratedApp';
 import DemoApp from './DemoApp';
 
 function App() {
-  // Check if we're in demo mode based on URL parameter
-  const isDemo = window.location.search.includes('demo=true') || window.location.pathname.includes('demo');
+  // Always show demo for now
+  const isDemo = true;
 
   return (
     <div className="App">

@@ -60,12 +60,14 @@ export const useTextToSpeech = (apiKey: string, onSpeechEnd?: () => void) => {
     }
 
     // If no API key, use fallback
-    if (!apiKey || apiKey === 'your_api_key_here') {
-      console.log('ElevenLabs API key not configured, using browser TTS');
+    if (!apiKey || apiKey === 'your_api_key_here' || apiKey.length < 10) {
+      console.log('ElevenLabs API key not configured, using browser TTS fallback');
+      console.log('API key status:', apiKey ? `Present (${apiKey.length} chars)` : 'Missing');
       return speakFallback(text);
     }
     
-    console.log('Starting ElevenLabs TTS with API key:', apiKey.substring(0, 10) + '...');
+    console.log('Starting ElevenLabs TTS');
+    console.log('API key status: Valid', apiKey.substring(0, 10) + '...');
 
     const abortController = new AbortController();
     abortControllerRef.current = abortController;
@@ -139,14 +141,19 @@ export const useTextToSpeech = (apiKey: string, onSpeechEnd?: () => void) => {
         speakFallback(text);
       };
 
-    } catch (error) {
+    } catch (error: any) {
       setIsLoading(false);
       setIsPlaying(false);
       
       if (axios.isCancel(error)) {
         console.log('TTS request cancelled');
       } else {
-        console.error('ElevenLabs TTS Error:', error);
+        console.error('ElevenLabs TTS Error:', error.response?.data || error.message || error);
+        console.error('Error details:', {
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          headers: error.response?.headers
+        });
         // Try fallback on error
         speakFallback(text);
       }
