@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 /**
  * Demo-ready React component you can run directly in a React + Tailwind project.
@@ -43,6 +43,25 @@ export default function KnowledgeFactoryPage({
   type Step = typeof steps[number];
   const [stepIndex, setStepIndex] = useState(0);
   const [showWalk, setShowWalk] = useState(true);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Initialize and play background music when walkthrough starts
+  useEffect(() => {
+    if (showWalk && !audioRef.current) {
+      audioRef.current = new Audio('/audio/background-music.mp3');
+      audioRef.current.volume = 0.14; // Same volume as main demo
+      audioRef.current.loop = false;
+      audioRef.current.play().catch(err => console.log('Failed to play background music:', err));
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, [showWalk]);
 
   useEffect(() => {
     if (!showWalk) return;
@@ -170,7 +189,15 @@ export default function KnowledgeFactoryPage({
           <button onClick={()=>setIsPaused(p=>!p)} className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
             {isPaused?"▶️ Resume":"⏸️ Pause"} Flow
           </button>
-          <button onClick={()=>{ setShowWalk(true); setStepIndex(0); }} className="rounded-lg border border-blue-400/60 bg-black/40 px-3 py-2 text-blue-200 hover:bg-black/60 text-sm">
+          <button onClick={()=>{ 
+            setShowWalk(true); 
+            setStepIndex(0);
+            // Restart music when replaying
+            if (audioRef.current) {
+              audioRef.current.currentTime = 0;
+              audioRef.current.play().catch(err => console.log('Failed to replay music:', err));
+            }
+          }} className="rounded-lg border border-blue-400/60 bg-black/40 px-3 py-2 text-blue-200 hover:bg-black/60 text-sm">
             ↺ Replay Walkthrough
           </button>
           <button onClick={()=> setStepIndex(Math.max(0, stepIndex-1))} disabled={stepIndex===0} className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-slate-200 hover:bg-slate-700 text-sm disabled:opacity-40">
